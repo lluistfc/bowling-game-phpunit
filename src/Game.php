@@ -35,13 +35,17 @@ class Game
         $rollIndex = 0;
         for ($frame = 0; $frame < 10; $frame++) {
             // spare
-            if ($this->isSpare($rollIndex)) {
+            if ($this->isStrike($rollIndex)) {
+                $score += 10 + $this->rolls[$rollIndex + 1]
+                    + $this->rolls[$rollIndex + 2] ;
+            } elseif ($this->isSpare($rollIndex)) {
                 $score += 10 + $this->rolls[$rollIndex + 2];
+                $rollIndex++;
             } else {
                 $score += $this->rolls[$rollIndex] + $this->rolls[$rollIndex +1];
+                $rollIndex++;
             }
-            $rollIndex += 2;
-
+            $rollIndex++;
         }
 
         return $score;
@@ -54,5 +58,14 @@ class Game
     public function isSpare($currentRoll)
     {
         return ($this->rolls[$currentRoll] + $this->rolls[$currentRoll + 1]) == 10;
+    }
+
+    /**
+     * @param $rollIndex
+     * @return bool
+     */
+    public function isStrike($rollIndex)
+    {
+        return $this->rolls[$rollIndex] == 10;
     }
 }
