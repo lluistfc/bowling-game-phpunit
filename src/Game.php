@@ -32,9 +32,26 @@ class Game
     public function score()
     {
         $score = 0;
-        for ($i = 0; $i < count($this->rolls); $i++) {
-            $score += $this->rolls[$i];
+        $rollIndex = 0;
+        for ($frameIndex = 0; $frameIndex < 10; $frameIndex++) {
+            // spare
+            if ($this->isSpare($rollIndex)) {
+                $score += 10 + $this->rolls[$frameIndex + 2];
+            } else {
+                $score += $this->rolls[$rollIndex] + $this->rolls[$rollIndex +1];
+            }
+            $rollIndex += 2;
+
         }
         return $score;
+    }
+
+    /**
+     * @param $rollIndex
+     * @return bool
+     */
+    public function isSpare($rollIndex)
+    {
+        return ($this->rolls[$rollIndex] + $this->rolls[$rollIndex + 1]) == 10;
     }
 }

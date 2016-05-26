@@ -7,7 +7,6 @@ class GameTest extends \PHPUnit_Framework_TestCase
     /** @var Game $game */
     private $game;
 
-
     public function testOneSpare()
     {
         $this->game->roll(5);
