@@ -36,16 +36,15 @@ class Game
         for ($frame = 0; $frame < 10; $frame++) {
             // spare
             if ($this->isStrike($rollIndex)) {
-                $score += 10 + $this->rolls[$rollIndex + 1]
-                    + $this->rolls[$rollIndex + 2] ;
+                $score += 10 + $this->strikeBonus($rollIndex);
+                $rollIndex++;
             } elseif ($this->isSpare($rollIndex)) {
                 $score += 10 + $this->rolls[$rollIndex + 2];
-                $rollIndex++;
+                $rollIndex+=2;
             } else {
                 $score += $this->rolls[$rollIndex] + $this->rolls[$rollIndex +1];
-                $rollIndex++;
+                $rollIndex+=2;
             }
-            $rollIndex++;
         }
 
         return $score;
@@ -67,5 +66,16 @@ class Game
     public function isStrike($rollIndex)
     {
         return $this->rolls[$rollIndex] == 10;
+    }
+
+    /**
+     * @param $rollIndex
+     * @return mixed
+     */
+    public function strikeBonus($rollIndex)
+    {
+        $strikeBonus = $this->rolls[$rollIndex + 1]
+            + $this->rolls[$rollIndex + 2];
+        return $strikeBonus;
     }
 }
