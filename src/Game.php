@@ -33,25 +33,26 @@ class Game
     {
         $score = 0;
         $rollIndex = 0;
-        for ($frameIndex = 0; $frameIndex < 10; $frameIndex++) {
+        for ($frame = 0; $frame < 10; $frame++) {
             // spare
             if ($this->isSpare($rollIndex)) {
-                $score += 10 + $this->rolls[$frameIndex + 2];
+                $score += 10 + $this->rolls[$rollIndex + 2];
             } else {
                 $score += $this->rolls[$rollIndex] + $this->rolls[$rollIndex +1];
             }
             $rollIndex += 2;
 
         }
+
         return $score;
     }
 
     /**
-     * @param $rollIndex
+     * @param $currentRoll
      * @return bool
      */
-    public function isSpare($rollIndex)
+    public function isSpare($currentRoll)
     {
-        return ($this->rolls[$rollIndex] + $this->rolls[$rollIndex + 1]) == 10;
+        return ($this->rolls[$currentRoll] + $this->rolls[$currentRoll + 1]) == 10;
     }
 }
