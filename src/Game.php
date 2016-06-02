@@ -3,6 +3,8 @@ namespace Bowling;
 
 class Game
 {
+    const FRAMES_IN_GAME = 10;
+    const ALL_PINS_DOWN = 10;
     /** @var int $score  */
     private $score = 0;
     /** @var array  */
@@ -33,13 +35,12 @@ class Game
     {
         $score = 0;
         $rollIndex = 0;
-        for ($frame = 0; $frame < 10; $frame++) {
-            // spare
+        for ($frame = 0; $frame < self::FRAMES_IN_GAME; $frame++) {
             if ($this->isStrike($rollIndex)) {
-                $score += 10 + $this->strikeBonus($rollIndex);
+                $score += $this->strikeScore($rollIndex);
                 $rollIndex++;
             } elseif ($this->isSpare($rollIndex)) {
-                $score += 10 + $this->rolls[$rollIndex + 2];
+                $score += $this->spareScore($rollIndex);
                 $rollIndex+=2;
             } else {
                 $score += $this->rolls[$rollIndex] + $this->rolls[$rollIndex +1];
@@ -56,7 +57,7 @@ class Game
      */
     public function isSpare($currentRoll)
     {
-        return ($this->rolls[$currentRoll] + $this->rolls[$currentRoll + 1]) == 10;
+        return ($this->rolls[$currentRoll] + $this->rolls[$currentRoll + 1]) == self::ALL_PINS_DOWN;
     }
 
     /**
@@ -65,7 +66,7 @@ class Game
      */
     public function isStrike($rollIndex)
     {
-        return $this->rolls[$rollIndex] == 10;
+        return $this->rolls[$rollIndex] == self::ALL_PINS_DOWN;
     }
 
     /**
@@ -77,5 +78,32 @@ class Game
         $strikeBonus = $this->rolls[$rollIndex + 1]
             + $this->rolls[$rollIndex + 2];
         return $strikeBonus;
+    }
+
+    /**
+     * @param $rollIndex
+     * @return mixed
+     */
+    public function spareBonus($rollIndex)
+    {
+        return $this->rolls[$rollIndex + 2];
+    }
+
+    /**
+     * @param $rollIndex
+     * @return int
+     */
+    public function strikeScore($rollIndex)
+    {
+        return self::ALL_PINS_DOWN + $this->strikeBonus($rollIndex);
+    }
+
+    /**
+     * @param $rollIndex
+     * @return int
+     */
+    public function spareScore($rollIndex)
+    {
+        return self::ALL_PINS_DOWN + $this->spareBonus($rollIndex);
     }
 }
